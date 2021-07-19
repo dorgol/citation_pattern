@@ -20,6 +20,7 @@ MAPBOX_API_KEY  = 'pk.eyJ1IjoiZG9yZ29sZGVuYmVyZyIsImEiOiJja3I5Y2V0b280NHk1Mm9xaD
 # data
 # data = 'https://raw.githubusercontent.com/groundhogday321/dataframe-datasets/master/us_county_centroids.csv'
 # county_population = pd.read_csv(data)
+
 county_population['scaled_population'] = county_population['Population_2010']/1_000
 print(county_population.columns)
 
