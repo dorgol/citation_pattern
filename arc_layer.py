@@ -2,11 +2,12 @@ import streamlit as st
 import pandas as pd
 import pydeck as pdk
 
-path = "https://github.com/dorgol/citation_pattern/blob/main/"
-affiliations = pd.read_csv(path + "affiliations.csv")
+path = "https://raw.githubusercontent.com/dorgol/citation_pattern/main/affiliations.csv"
+affiliations = pd.read_csv(path)
 
 def read_yearly_citations(year):
-    return pd.read_csv(path + 'citations_yearly/' + 'citations_yearly' + str(year) + '.csv')
+    return pd.read_csv('https://raw.githubusercontent.com/dorgol/citation_pattern/main/citations_yearly/citations_yearly' +
+                       str(year) + '.csv')
 
 def merge_loc(year, min_num, type_num = 'type_2'):
     df = read_yearly_citations(year)
