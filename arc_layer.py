@@ -1,10 +1,9 @@
 import streamlit as st
 import pandas as pd
 import pydeck as pdk
-import ipywidgets
-import IPython
-path = "C:/Users/dorgo/Documents/university/thesis/new_thesis/data/"
-affiliations = pd.read_csv(path + 'affiliations/' + 'affiliations.csv')
+
+path = "C:/Users/dorgo/PycharmProjects/knowledge_dist/"
+affiliations = pd.read_csv(path + 'affiliations.csv')
 
 def read_yearly_citations(year):
     return pd.read_csv(path + 'citations_yearly/' + 'citations_yearly' + str(year) + '.csv')
@@ -38,7 +37,6 @@ def create_maps(year, min_num, type_num, scaling):
         "ArcLayer",
         data=merge_loc(year, min_num),
         get_width= type_num + "/" + str(scaling),
-        # get_width="type_2/100",
         get_source_position=["Longitude_x", "Latitude_x"],
         get_target_position=["Longitude_y", "Latitude_y"],
         get_tilt=15,
