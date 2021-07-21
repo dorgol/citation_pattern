@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import pydeck as pdk
 
-path = "C:/Users/dorgo/PycharmProjects/knowledge_dist/"
-affiliations = pd.read_csv(path + 'affiliations.csv')
+path = "https://github.com/dorgol/citation_pattern/blob/main/"
+affiliations = pd.read_csv(path + "affiliations.csv")
 
 def read_yearly_citations(year):
     return pd.read_csv(path + 'citations_yearly/' + 'citations_yearly' + str(year) + '.csv')
