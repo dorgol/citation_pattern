@@ -2,11 +2,12 @@ import streamlit as st
 import pandas as pd
 import pydeck as pdk
 
-path = "C:/Users/dorgo/Documents/university/thesis/new_thesis/data/"
-affiliations = pd.read_csv(path + 'affiliations/' + 'affiliations.csv')
+path = "https://raw.githubusercontent.com/dorgol/citation_pattern/main/affiliations.csv"
+affiliations = pd.read_csv(path)
 
 def read_yearly_citations(year):
-    return pd.read_csv(path + 'citations_yearly/' + 'citations_yearly' + str(year) + '.csv')
+    return pd.read_csv('https://raw.githubusercontent.com/dorgol/citation_pattern/main/citations_yearly/citations_yearly' +
+                       str(year) + '.csv')
 
 def merge_loc(year, min_num, type_num = 'type_2'):
     df = read_yearly_citations(year)
@@ -45,6 +46,7 @@ def create_heatmaps(year, min_num, type_num):
                          pitch=50,
                          zoom=3)
     # deck = pdk.Deck(arc_layer, initial_view_state=view, tooltip=TOOLTIP_TEXT)
+    st.title("Heatmap of Research Papers per Year")
     st.pydeck_chart(pdk.Deck(arc_layer, initial_view_state=view,
                              tooltip={"text": "concentration of research"}))
 

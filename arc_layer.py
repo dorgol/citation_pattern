@@ -54,6 +54,7 @@ def create_maps(year, min_num, type_num, scaling):
     TOOLTIP_TEXT = {"html": "{" + type_num + "}"  + "citations  <br /> {DisplayName_x} citing - {DisplayName_y} cited <br /> "
                         "Citing institution in red; Cited institution in green"}
     # deck = pdk.Deck(arc_layer, initial_view_state=view, tooltip=TOOLTIP_TEXT)
+    st.title("Pattern of Citations Between Institutions")
     st.pydeck_chart(pdk.Deck(arc_layer, initial_view_state=view, tooltip=TOOLTIP_TEXT))
 
 year = st.sidebar.slider('year', 1990, 1999, 1990, 1)
