@@ -6,10 +6,19 @@ path = "https://raw.githubusercontent.com/dorgol/citation_pattern/main/affiliati
 affiliations = pd.read_csv(path)
 
 def read_yearly_citations(year):
+    #Goal: read the citations data in a given year
+    #Gets: year; int. the desired year of the data.
+    #Returns: dataframe. Read 'Goal'.
     return pd.read_csv('https://raw.githubusercontent.com/dorgol/citation_pattern/main/citations_yearly/citations_yearly' +
                        str(year) + '.csv')
 
 def merge_loc(year, min_num, type_num = 'type_2'):
+    #Goal: merge the citations data with a location of every institution.
+    #Gets: year; int. The desired year of the data.
+    #      min_num; int. The minimal number of citations that will be included in the data.
+    #      type_num: str; either 'type_1', 'type_2', 'type_3' or 'type_4'. The type of citation.
+    #      For more information read the description in 'citations.citation_amount'.
+    #Returns: dataframe; read the 'Goal'.
     df = read_yearly_citations(year)
     a = pd.merge(df, affiliations, 'inner',
              left_on='CitingAffiliatoinId',
