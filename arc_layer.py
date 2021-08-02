@@ -43,6 +43,8 @@ RED_RGB = [240, 100, 0, 40]
 
 
 
+#testing git
+
 def create_maps(year, min_num, type_num, scaling, method, quantile):
     # Specify a deck.gl ArcLayer
     G = graph_aspects.create_yearly_graph(year, year)

@@ -50,7 +50,7 @@ def full_data(year_citing, year_cited):
 def citation_amount(year_citing, year_cited, cal_type):
 
 
-    # Goal: assign the number of citations between two affiliations in any year pair
+    # Goal: assign the number of citations between two affiliations in any pair of years
     # Gets: year_citing: int, the publish year of the citing paper;
     #       year_cited: int, the publish year of the cited paper.
     #       cal_type: int, detailed below.
@@ -67,6 +67,7 @@ def citation_amount(year_citing, year_cited, cal_type):
     # Type 4 - It's type 2 with normalization w.r.t the number of affiliations. If I have a paper written by
     #  2 Harvard researchers and 1 Cornell researcher I will count every citation
     #  as 0.5 and I will sum across the dyads.
+    # Returns: dask dataframe. A dataframe of citations between two institutions with the chosen type.
 
     data = full_data(year_citing, year_cited)
     if cal_type == 1:
@@ -92,10 +93,9 @@ def citation_amount(year_citing, year_cited, cal_type):
     amount = amount.rename(columns={amount.columns[0]: "number"})
     return amount
 
-
 def citation_by_years(year_cited, year_citing, cal_type):
 
-    # Goal: get a dask dataframe of all cited papers from a given range
+    # Goal: get a dask dataframe of all cited papers from a given range of years
     # Gets: year_citing: int, the publish year of the citing paper;
     #       year_cited: int, the publish year of the cited paper.
     #       cal_type: int, detailed below.
@@ -108,6 +108,10 @@ def citation_by_years(year_cited, year_citing, cal_type):
     return dfs
 
 def citation_all_types(year_cited, year_citing):
+    # Goal: return a dask dataframe with all types of citations as explained above.
+    # Gets: year_cited; int. The year of the cited paper.
+    #       year_citing; int. The year of the citing paper.
+    # Returns: dask dataframe. A dataframe of the chosen
     empty_lis = []
     for i in [1, 2, 3, 4]:
         a = citation_by_years(year_cited, year_citing, i).compute()
@@ -122,6 +126,9 @@ def citation_all_types(year_cited, year_citing):
     return df_merged
 
 def citation_types_years(year_citing):
+    # Goal: get the citations data for every cited year and chosen citing year.
+    # Gets: year_citing; int. The year to consider.
+    # Returns: dask dataframe. A dataframe of the citations from one year to every former year.
     years = range(1990, year_citing + 1)
     lis = []
     for i in years:
@@ -131,6 +138,9 @@ def citation_types_years(year_citing):
     return df
 
 def save_citation_types(end_year):
+    # Goal: save the data from a range of years with every citation type.
+    # Gets: end_year; int. The end year of a range to consider.
+    # Returns: saving the data.
     year_range = range(1990, end_year + 1)
     citations_yearly = citation_types_years(year_range[len(year_range) - 1])
     name_db = path + 'citations_yearly/' + 'citations_yearly' + str(end_year) + '.csv'
@@ -159,11 +169,18 @@ def citation_all_years(cal_type):
 
 
 def unique_citing_aff(year_citing, year_cited):
+    # Goal: get the unique list of citing-cited citations in a pair of years.
+    # Gets: year_citing: int; the citing year to consider.
+    #       year_cited: int; the cited year to consider.
+    # Returns: dataframe. a dataframe with unique connections.
     df = full_data(year_citing, year_cited).reset_index()
     df = df[['CitingAffiliatoinId', 'CitedAffiliatoinId', 'CitingYearId', 'CitedYearId']].drop_duplicates()
     return df
 
 def unique_citing_year(year_citing):
+    # Goal: Get the unique citing-cited duos per year. It would help to save some computations of the shortest paths.
+    # Gets: year_citing; int. The year of the citing paper.
+    # Returns: dataframe. a dataframe of all unqiue citaitons from 'year_citing' to every former year.
     years = range(1990,year_citing + 1)
     lis = []
     for i in years:
@@ -173,6 +190,11 @@ def unique_citing_year(year_citing):
     return df
 
 def reading_yearly_data(citing_year, file_type, cited_year = None):
+    # Goal: function to read every type of data.
+    # Gets: citing_year; int. The citing year.
+    #       cited_year; int. relevant only if 'file_type' is 'paths'.
+    #       file_type; str. 'paths' to return the shortest paths between institutions.
+    #                       'citaiotns' to return the number of citations in a given year.
     if file_type == 'paths':
         folder = 'shortest_paths'
         relative_path = path + folder + '/' + 'citing_path' + str(citing_year) + '_' + str(cited_year) + '.txt'
