@@ -5,9 +5,9 @@ from scipy import spatial
 
 path = "C:/Users/dorgo/Documents/university/thesis/new_thesis/data/"
 airports_location = pd.read_csv(path+'airports_location/'+'airports_location.csv')
-airports_location.airports_locations = airports_location.airports_locations.apply(ast.literal_eval)
 affiliations = pd.read_csv(path+'affiliations/'+'affiliations.csv')
 affiliations['coordinates'] = affiliations[['Latitude', 'Longitude']].values.tolist()
+airports_location['airports_locations'] = airports_location[['latitude_deg', 'longitude_deg']].values.tolist()
 
 def cartesian(coordinates):
 
@@ -42,12 +42,13 @@ def closest_institutions(affiliationId, inst, coordinates_col, k = 5):
 
 
 def main_op():
-
-    k_closest_affiliations = pd.concat([closest_institutions(i, affiliations, affiliations.coordinates, 2)
+    k_affiliations = 3
+    k_airports = 6
+    k_closest_affiliations = pd.concat([closest_institutions(i, affiliations, affiliations.coordinates, k_affiliations)
                                         for i in affiliations.AffiliationId])
     k_closest_affiliations = k_closest_affiliations[k_closest_affiliations.affiliationId != k_closest_affiliations.AffiliationId]
     k_closest_airports = pd.concat(
-        [closest_institutions(i, airports_location, airports_location.airports_locations, 2)
+        [closest_institutions(i, airports_location, airports_location.airports_locations, k_airports)
          for i in affiliations.AffiliationId])
     k_closest_affiliations.to_csv(path + 'closest_affiliations/' + 'closest_affiliations.csv', index=False)
     k_closest_airports.to_csv(path + 'closest_airports/' + 'closest_airports.csv', index=False)
